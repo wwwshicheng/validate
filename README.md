@@ -12,7 +12,6 @@ def addres_parse(d):
     return "abcdefg"
 
 VALIDATE = {
-    # 1:课文预习 2 生词听写 3 单元复习 4 高频错题 5 生词听写   6 课外阅读
     1: Schema(typ={"code": str, "value": int}),
     2: Schema(typ={"qid": []}),
     3: Schema(typ={"qid": []}),
