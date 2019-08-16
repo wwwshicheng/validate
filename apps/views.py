@@ -42,7 +42,6 @@ def r_validate(request):
         schema.key = "data3"
         schema.error = "作业数据格式错误"
         schema.validate(args.data3)
-    except Exception as e:
-        print("aaa")
+    except TypeError as e:
         return fail_response(str(e))
     return ok_response()
