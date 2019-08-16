@@ -68,7 +68,6 @@ docs/_build/
 
 # PyBuilder
 target/
-.idea
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -102,3 +101,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+.idea
