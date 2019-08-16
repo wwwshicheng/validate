@@ -40,7 +40,7 @@ def r_validate(request):
     try:
         schema = VALIDATE.get(1)
         schema.key = "data3"
-        schema.error = "作业数据格式错误"
+        schema.error = "数据格式错误"
         schema.validate(args.data3)
     except TypeError as e:
         return fail_response(str(e))
