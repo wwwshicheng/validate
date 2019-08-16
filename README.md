@@ -1,6 +1,7 @@
 # validate
-数据验证、格式化
-
+可用于请求参数验证、数据验证等
+django 需要对QueryDict扩展下  
+[django配置](https://github.com/wwwshicheng/validate/blob/master/validate/middleware.py)
 ```
 def name_parse(d):
     if d == "tom":
@@ -9,8 +10,6 @@ def name_parse(d):
     
 def addres_parse(d):
     return "abcdefg"
-
-
 
 VALIDATE = {
     # 1:课文预习 2 生词听写 3 单元复习 4 高频错题 5 生词听写   6 课外阅读
@@ -47,4 +46,56 @@ def r_validate(request):
         print("aaa")
         return fail_response(str(e))
     return ok_response()
-    ```
+```
+    
+Flask暂时这样处理
+```
+class BaseView(Resource):
+    @staticmethod
+    def args():
+        """
+        获取参数
+        """
+        query = request.args.copy()
+        query.update(request.form)
+        try:
+            if request.data:
+                body = json.loads(request.data.decode())
+                query.update(body)
+        except JSONDecodeError:
+            pass
+        return query
+
+    def parameter_casts(self, **kwargs):
+        """
+        使用方法
+        >>> args = self.parameter_casts(keyword=str, page=int, a="(\d+)")
+        """
+        return casts(self.args(), **kwargs)
+
+    def argument(self, **kwargs):
+        """
+        使用方法
+        >>> args, e = self.argument(
+        >>>      name=Schema(type=str, required=True, error="姓名不能为空"),
+        >>>      age=Schema(type=int, required=True, filter=lambda x: x > 0, error="年龄信息错误"),
+        >>>      image=Schema(type=[str], default=""),
+        >>>      data=Schema(type=[{"qid": int, "aid": [str]}])
+        >>> )
+        """
+        args = Struct()
+        error = None
+        parameter = self.args()
+        for k, typ in kwargs.items():
+            if not isinstance(typ, Schema):
+                raise TypeError()
+            v = parameter.get(k)
+            try:
+                typ.key = k
+                args[k] = typ.validate(v)
+            except Exception as e:
+                error = str(e)
+        return args, error
+```
+
+
