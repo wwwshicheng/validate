@@ -48,7 +48,7 @@ def r_validate(request):
 ```
     
 Flask暂时这样处理
-```pythonn
+```python
 class BaseView(Resource):
     @staticmethod
     def args():
