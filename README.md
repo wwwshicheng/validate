@@ -2,7 +2,7 @@
 可用于请求参数验证、数据验证等
 django 需要对QueryDict扩展下  
 [django配置](https://github.com/wwwshicheng/validate/blob/master/validate/middleware.py)
-```
+```python
 def name_parse(d):
     if d == "tom":
         return "tom1"
